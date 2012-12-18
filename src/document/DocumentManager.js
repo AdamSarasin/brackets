@@ -1090,7 +1090,7 @@ define(function (require, exports, module) {
      * @private
      * Initializes the working set.
      */
-    function _projectOpen() {
+    function _projectOpen(e) {
         _isProjectChanging = false;
         
         // file root is appended for each project
@@ -1120,7 +1120,9 @@ define(function (require, exports, module) {
         }
 
         if (activeFile) {
-            CommandManager.execute(Commands.FILE_OPEN, { fullPath: activeFile });
+            var promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: activeFile });
+            // Add this promise to the event's promises to signal that this handler isn't done yet
+            e.promises.push(promise);
         }
     }
 
